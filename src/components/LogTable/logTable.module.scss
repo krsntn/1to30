@@ -1,0 +1,10 @@
+.container {
+  width: 100%;
+  max-width: 960px;
+  margin: auto;
+
+  .recordContainer {
+    display: flex;
+    justify-content: space-around;
+  }
+}

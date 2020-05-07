@@ -1,0 +1,27 @@
+@import '../../styles/variables.module.scss';
+
+.table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  color: #fff;
+
+  .column {
+    border: 4px solid $background;
+    width: 20%;
+    height: 25%;
+
+    .button {
+      font-size: 2.2rem;
+      height: 100%;
+
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: $primary-color;
+        border-color: $primary-color;
+        box-shadow: initial;
+      }
+    }
+  }
+}
