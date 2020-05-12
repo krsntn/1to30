@@ -10,20 +10,23 @@ const Layout = ({ children }) => {
       site {
         siteMetadata {
           title
+          profileUrl
         }
       }
     }
   `);
 
+  const { title, profileUrl } = data.site.siteMetadata;
+
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
+      <Header siteTitle={title} />
       <div className={css.main}>
         <main>{children}</main>
         <footer className={`${css.footer} text-center mb-5`}>
-          © {new Date().getFullYear()}, Built by
+          © 2020, Built by
           {` `}
-          <a href="https://dev.karson.tk">karson</a>
+          <a href={profileUrl}>karson</a>
         </footer>
       </div>
     </>

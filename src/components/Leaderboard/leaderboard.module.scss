@@ -1,4 +1,4 @@
-@import '../../styles/variables.module.scss';
+@import '../../../scss/variables.scss';
 
 .table {
   width: 100%;
@@ -45,7 +45,7 @@
           &::before {
             content: attr(data-name);
             background: #222;
-            color: $background;
+            color: $background-white;
             position: absolute;
             padding: 4px 10px;
             border-radius: 6px;
