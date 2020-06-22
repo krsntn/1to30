@@ -56,13 +56,12 @@ const GameTable = (props) => {
     );
 
     if (nextNumberPage.length) {
-      newArray[index] = numArray[nextNumberPage][index];
-    } else if (
-      numArray[Object.keys(numArray).length - 1][index] <= selectedNumber
-    ) {
-      newArray[index] = '';
+      newArray[index] =
+        numArray[nextNumberPage][
+          nextAppearNumber - nextNumberPage * NUMBER_PER_PAGE - 1
+        ];
     } else {
-      newArray[index] = numArray[Object.keys(numArray).length - 1][index];
+      newArray[index] = '';
     }
 
     if (selectedNumber === currentNumber) {
