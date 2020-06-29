@@ -62,22 +62,30 @@ const LogTable = (props) => {
     if (data) {
       const output = [];
       const keys = Object.keys(data);
+
+      let index = 0;
       for (const key of keys) {
         const item = data[key];
         const childKeys = Object.keys(data[key]);
+
         for (const childKey of childKeys) {
-          output.push(<div>{`${childKey}: ${item[childKey] || '-'}`}</div>);
+          output.push(
+            <div key={index++}>{`${childKey}: ${item[childKey] || '-'}`}</div>
+          );
         }
       }
       return output;
     }
   };
+
   const displayGeolocation = (data) => {
     if (data) {
       const output = [];
       const keys = Object.keys(data);
+
+      let index = 0;
       for (const key of keys) {
-        output.push(<div>{`${key}: ${data[key] || '-'}`}</div>);
+        output.push(<div key={index++}>{`${key}: ${data[key] || '-'}`}</div>);
       }
       return output;
     }
@@ -88,7 +96,11 @@ const LogTable = (props) => {
       const accordian = (
         <div className="accordion" id={`accordion${1}`}>
           {data.map((record, index) => {
-            return <div className="card">{createCard(record, index)}</div>;
+            return (
+              <div key={index} className="card">
+                {createCard(record, index)}
+              </div>
+            );
           })}
         </div>
       );
