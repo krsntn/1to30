@@ -19,6 +19,13 @@ const GameTable = (props) => {
   const { updateCurrentNumber, currentNumber, freeze, TOTAL_NUMBER } = props;
   const [displayArray, setDisplayArray] = useState([]);
   const [numArray, setNumArray] = useState({});
+  const [mouseClick, setMouseClick] = useState(false);
+
+  useEffect(() => {
+    document.querySelector('#gameTable').addEventListener('mouseup', () => {
+      setMouseClick(true);
+    });
+  }, []);
 
   useEffect(() => {
     const arrayObject = {};
@@ -47,6 +54,9 @@ const GameTable = (props) => {
   };
 
   const onClick = (selectedNumber) => {
+    if (!mouseClick) return;
+
+    setMouseClick(false);
     const newArray = [...displayArray];
     const index = displayArray.indexOf(selectedNumber);
     const nextAppearNumber = currentNumber + NUMBER_PER_PAGE;
@@ -100,7 +110,7 @@ const GameTable = (props) => {
   };
 
   return (
-    <table className={css.table}>
+    <table id="gameTable" className={css.table}>
       <tbody>{createRow()}</tbody>
     </table>
   );
