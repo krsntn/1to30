@@ -6,6 +6,7 @@ import firebase from 'firebase';
 import DeviceDetector from 'device-detector-js';
 import { startDB } from '../utils/firebase-config';
 import blockedNames from '../utils/blockedNames';
+import { signIn, signOut } from '../utils/anonymousAuth';
 
 startDB();
 const database = firebase.database();
@@ -92,6 +93,7 @@ const Main = () => {
   }, [gameStatus, intervalId]);
 
   const startGame = () => {
+    signIn();
     fetch('https://ipapi.co/json/')
       .then((response) => response.json())
       .then((data) => {
@@ -129,6 +131,7 @@ const Main = () => {
     setGameStatus(0);
     setCurrentNumber(1);
     setFreeze(false);
+    signOut();
   };
 
   const submitName = (event) => {
