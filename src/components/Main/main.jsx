@@ -93,37 +93,37 @@ const Main = () => {
   }, [gameStatus, intervalId]);
 
   const startGame = () => {
-    signIn();
-    fetch('https://ipapi.co/json/')
-      .then((response) => response.json())
-      .then((data) => {
-        if (data) {
-          const device = deviceDetector.parse(window.navigator.userAgent);
-          const log = {
-            time: firebase.database.ServerValue.TIMESTAMP,
-            geolocation: {
-              ip: data.ip,
-              city: data.city,
-              region: data.region,
-              region_code: data.region_code,
-              country: data.country,
-              country_code: data.country_code,
-              country_name: data.country_name,
-              postal: data.postal,
-              latitude: data.latitude,
-              longitude: data.longitude,
-              timezone: data.timezone,
-              country_calling_code: data.country_calling_code,
-              currency: data.currency,
-              asn: data.asn,
-              org: data.org,
-            },
-            device: device,
-          };
-          logDB.push(log);
-        }
-      });
-
+    signIn(() =>
+      fetch('https://ipapi.co/json/')
+        .then((response) => response.json())
+        .then((data) => {
+          if (data) {
+            const device = deviceDetector.parse(window.navigator.userAgent);
+            const log = {
+              time: firebase.database.ServerValue.TIMESTAMP,
+              geolocation: {
+                ip: data.ip,
+                city: data.city,
+                region: data.region,
+                region_code: data.region_code,
+                country: data.country,
+                country_code: data.country_code,
+                country_name: data.country_name,
+                postal: data.postal,
+                latitude: data.latitude,
+                longitude: data.longitude,
+                timezone: data.timezone,
+                country_calling_code: data.country_calling_code,
+                currency: data.currency,
+                asn: data.asn,
+                org: data.org,
+              },
+              device: device,
+            };
+            logDB.push(log);
+          }
+        })
+    );
     setGameStatus(1);
   };
 
@@ -159,14 +159,18 @@ const Main = () => {
         if (data.val()) {
           const record = data.val();
           if (newData.speed < record.speed) {
-            database.ref(`leaderboard30/${name}`).set(newData);
+            database
+              .ref(`leaderboard30/${name}`)
+              .set(newData)
+              .then(resetGame);
           }
         } else {
-          database.ref(`leaderboard30/${name}`).set(newData);
+          database
+            .ref(`leaderboard30/${name}`)
+            .set(newData)
+            .then(resetGame);
         }
       });
-
-    resetGame();
   };
 
   return (
