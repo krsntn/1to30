@@ -3,7 +3,7 @@ module.exports = {
     title: `1to30 - Game`,
     description: `Click from 1 to 30 as fast as you can`,
     author: `krsntn`,
-    profileUrl: 'https://dev.karson.tk',
+    profileUrl: 'https://dev.krsn.xyz',
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
