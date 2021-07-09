@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import css from './logTable.module.scss';
-import firebase from 'firebase';
-import { startDB } from '../utils/firebase-config';
+import React, { useState, useEffect } from "react";
+import css from "./logTable.module.scss";
+import firebase from "firebase";
+import { startDB } from "../utils/firebase-config";
 
 startDB();
 const database = firebase.database();
-const logDB = database.ref('log30');
+const logDB = database.ref("log30");
 
 function errData(err) {
   console.error(err);
 }
 
 const weekday = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
 ];
 
-const LogTable = (props) => {
+const LogTable = () => {
   const [data, setData] = useState([]);
 
-  const gotData = (data) => {
+  const gotData = data => {
     const localData = [];
     const records = data.val();
     if (records) {
@@ -41,24 +41,25 @@ const LogTable = (props) => {
 
   useEffect(() => {
     if (logDB) {
-      logDB.on('value', gotData, errData);
+      logDB.on("value", gotData, errData);
     }
   }, []);
 
-  const convertDateTime = (datetime) => {
+  const convertDateTime = datetime => {
     if (datetime) {
       const dataTime = new Date(datetime);
       return `${dataTime.getFullYear()}/${dataTime.getMonth() +
         1}/${dataTime.getDate()} ${
         weekday[dataTime.getDay()]
       } ${dataTime.getHours()}:${dataTime.getMinutes()}:${(
-        '0' + dataTime.getSeconds()
+        "0" + dataTime.getSeconds()
       ).slice(-2)}`;
     }
-    return '';
+    return "";
   };
 
-  const displayDevice = (data) => {
+  const displayDevice = data => {
+    let num = 0;
     if (data) {
       const output = [];
       const keys = Object.keys(data);
@@ -66,18 +67,25 @@ const LogTable = (props) => {
         const item = data[key];
         const childKeys = Object.keys(data[key]);
         for (const childKey of childKeys) {
-          output.push(<div>{`${childKey}: ${item[childKey] || '-'}`}</div>);
+          output.push(
+            <div key={`${num++}`}>{`${childKey}: ${item[childKey] ||
+              "-"}`}</div>
+          );
         }
       }
       return output;
     }
   };
-  const displayGeolocation = (data) => {
+
+  const displayGeolocation = data => {
+    let num = 0;
     if (data) {
       const output = [];
       const keys = Object.keys(data);
       for (const key of keys) {
-        output.push(<div>{`${key}: ${data[key] || '-'}`}</div>);
+        output.push(
+          <div key={`${num++}`}>{`${key}: ${data[key] || "-"}`}</div>
+        );
       }
       return output;
     }
@@ -86,10 +94,8 @@ const LogTable = (props) => {
   const createAccordion = () => {
     if (data.length > 0) {
       const accordian = (
-        <div className="accordion" id={`accordion${1}`}>
-          {data.map((record, index) => {
-            return <div className="card">{createCard(record, index)}</div>;
-          })}
+        <div id="accordion" className="accordion">
+          {data.map((record, index) => createCard(record, index))}
         </div>
       );
       return accordian;
@@ -98,28 +104,28 @@ const LogTable = (props) => {
 
   const createCard = (data, index) => {
     return (
-      <>
+      <div key={index} className="card">
         <div className="card-header" id={`heading${index}`}>
           <h2 className="mb-0">
             <button
               type="button"
-              className="btn btn-link collapsed"
+              className="btn btn-link"
+              aria-expanded="true"
               data-toggle="collapse"
               data-target={`#collapse${index}`}
-              aria-expanded="false"
               aria-controls={`collapse${index}`}
             >
               {convertDateTime(data.time)} ({data.geolocation.region}
-              {', '}
+              {", "}
               {data.geolocation.country_name})
             </button>
           </h2>
         </div>
         <div
           id={`collapse${index}`}
-          className="collapse"
+          className="collapse show"
           aria-labelledby={`heading${index}`}
-          data-parent="#accordion1"
+          data-parent="accordion"
         >
           <div className="card-body">
             <div className={css.recordContainer}>
@@ -128,7 +134,7 @@ const LogTable = (props) => {
             </div>
           </div>
         </div>
-      </>
+      </div>
     );
   };
 

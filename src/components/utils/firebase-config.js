@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from "firebase";
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_APIKEY,
@@ -8,7 +8,7 @@ const firebaseConfig = {
   storageBucket: process.env.FIREBASE_STORAGEBUCKET,
   messagingSenderId: process.env.FIREBASE_MESSAGINGSENDERID,
   appId: process.env.FIREBASE_APPID,
-  measurementId: process.env.FIREBASE_MEASUREMENTID,
+  measurementId: process.env.FIREBASE_MEASUREMENTID
 };
 
 export const startDB = () => {

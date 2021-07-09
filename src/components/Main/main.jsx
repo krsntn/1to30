@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import GameTable from '../GameTable';
-import Leaderboard from '../Leaderboard';
-import css from './main.module.scss';
-import firebase from 'firebase';
-import DeviceDetector from 'device-detector-js';
-import { startDB } from '../utils/firebase-config';
-import blockedNames from '../utils/blockedNames';
+import React, { useState, useEffect, useCallback } from "react";
+import GameTable from "../GameTable";
+import Leaderboard from "../Leaderboard";
+import css from "./main.module.scss";
+import firebase from "firebase";
+import DeviceDetector from "device-detector-js";
+import { startDB } from "../utils/firebase-config";
+import blockedNames from "../utils/blockedNames";
 
 startDB();
 const database = firebase.database();
-const leaderboardDB = database.ref('leaderboard30');
-const logDB = database.ref('log30');
+const leaderboardDB = database.ref("leaderboard30");
+const logDB = database.ref("log30");
 const deviceDetector = new DeviceDetector();
 
 const TOTAL_NUMBER = 30;
@@ -27,7 +27,7 @@ const Main = () => {
   const [freeze, setFreeze] = useState(false);
   const [data, setData] = useState([]);
 
-  const gotData = (data) => {
+  const gotData = data => {
     const localData = [];
     const records = data.val();
     if (records) {
@@ -43,13 +43,13 @@ const Main = () => {
   };
 
   const updateCurrentNumber = useCallback(
-    (selectedNumber) => {
+    selectedNumber => {
       if (selectedNumber === currentNumber) {
         if (currentNumber !== TOTAL_NUMBER) {
-          setCurrentNumber((prevState) => ++prevState);
+          setCurrentNumber(prevState => ++prevState);
         } else {
           // win
-          setCurrentNumber('Finished');
+          setCurrentNumber("Finished");
           setGameStatus(2);
         }
       } else {
@@ -64,9 +64,9 @@ const Main = () => {
 
   useEffect(() => {
     leaderboardDB
-      .orderByChild('speed')
+      .orderByChild("speed")
       .limitToFirst(20)
-      .on('value', gotData, errData);
+      .on("value", gotData, errData);
   }, []);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const Main = () => {
       setTime(0);
       setCurrentNumber(1);
       const id = setInterval(() => {
-        setTime((prevTime) => prevTime + 10);
+        setTime(prevTime => prevTime + 10);
       }, 10);
       setIntervalId(id);
     } else if (gameStatus === 0) {
@@ -92,36 +92,36 @@ const Main = () => {
   }, [gameStatus, intervalId]);
 
   const startGame = () => {
-    fetch('https://ipapi.co/json/')
-      .then((response) => response.json())
-      .then((data) => {
-        if (data) {
-          const device = deviceDetector.parse(window.navigator.userAgent);
-          const log = {
-            time: firebase.database.ServerValue.TIMESTAMP,
-            geolocation: {
-              ip: data.ip,
-              city: data.city,
-              region: data.region,
-              region_code: data.region_code,
-              country: data.country,
-              country_code: data.country_code,
-              country_name: data.country_name,
-              postal: data.postal,
-              latitude: data.latitude,
-              longitude: data.longitude,
-              timezone: data.timezone,
-              country_calling_code: data.country_calling_code,
-              currency: data.currency,
-              asn: data.asn,
-              org: data.org,
-            },
-            device: device,
-          };
-          logDB.push(log);
-        }
-      });
-
+    //     fetch("https://ipapi.co/json/")
+    //       .then(response => response.json())
+    //       .then(data => {
+    //         if (data) {
+    //           const device = deviceDetector.parse(window.navigator.userAgent);
+    //           const log = {
+    //             time: firebase.database.ServerValue.TIMESTAMP,
+    //             geolocation: {
+    //               ip: data.ip,
+    //               city: data.city,
+    //               region: data.region,
+    //               region_code: data.region_code,
+    //               country: data.country,
+    //               country_code: data.country_code,
+    //               country_name: data.country_name,
+    //               postal: data.postal,
+    //               latitude: data.latitude,
+    //               longitude: data.longitude,
+    //               timezone: data.timezone,
+    //               country_calling_code: data.country_calling_code,
+    //               currency: data.currency,
+    //               asn: data.asn,
+    //               org: data.org
+    //             },
+    //             device: device
+    //           };
+    //           logDB.push(log);
+    //         }
+    //       });
+    //
     setGameStatus(1);
   };
 
@@ -131,28 +131,28 @@ const Main = () => {
     setFreeze(false);
   };
 
-  const submitName = (event) => {
+  const submitName = event => {
     event.preventDefault();
-    const name = document.querySelector('#inlineFormInputName').value;
+    const name = document.querySelector("#inlineFormInputName").value;
 
     if (
       name.trim().length === 0 ||
       name.length > 30 ||
       blockedNames.includes(name)
     ) {
-      alert('Invalid name.');
+      alert("Invalid name.");
       return;
     }
 
     const newData = {
       speed: time / 1000,
-      time: firebase.database.ServerValue.TIMESTAMP,
+      time: firebase.database.ServerValue.TIMESTAMP
     };
 
     firebase
       .database()
       .ref(`leaderboard30/${name}`)
-      .once('value', (data) => {
+      .once("value", data => {
         if (data.val()) {
           const record = data.val();
           if (newData.speed < record.speed) {
@@ -171,12 +171,12 @@ const Main = () => {
       <div className={css.time}>{(time / 1000).toFixed(2)}</div>
       <div
         className={`${css.currentNumber} text-light ${
-          !freeze && currentNumber === 'Finished' ? 'bg-success' : ''
-        } ${!freeze && currentNumber !== 'Finished' ? 'bg-primary' : ''} ${
-          freeze ? 'bg-danger' : ''
+          !freeze && currentNumber === "Finished" ? "bg-success" : ""
+        } ${!freeze && currentNumber !== "Finished" ? "bg-primary" : ""} ${
+          freeze ? "bg-danger" : ""
         } font-weight-bold`}
       >
-        {freeze ? 'Game Over' : currentNumber}
+        {freeze ? "Game Over" : currentNumber}
       </div>
       <div className={css.box}>
         {gameStatus === 0 && (
@@ -195,10 +195,10 @@ const Main = () => {
             TOTAL_NUMBER={TOTAL_NUMBER}
           />
         )}
-        {gameStatus === 2 && currentNumber === 'Finished' && (
+        {gameStatus === 2 && currentNumber === "Finished" && (
           <div className={`${css.winBox} text-light bg-success`}>
             <span className={`d-block mb-5`}>
-              You {currentNumber === 'Finished' ? 'Win!' : 'Lose'}
+              You {currentNumber === "Finished" ? "Win!" : "Lose"}
             </span>
             <span className={`d-block`}>
               Your Time: {(time / 1000).toFixed(2)}
