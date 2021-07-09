@@ -9,7 +9,7 @@ $theme-colors: (
   'info': #1abc9c,
 );
 
-@import '../node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap/scss/bootstrap';
 
 html,
 body {

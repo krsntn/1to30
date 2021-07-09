@@ -59,17 +59,18 @@ const LogTable = () => {
   };
 
   const displayDevice = data => {
-    let num = 0;
     if (data) {
       const output = [];
       const keys = Object.keys(data);
+
+      let index = 0;
       for (const key of keys) {
         const item = data[key];
         const childKeys = Object.keys(data[key]);
+
         for (const childKey of childKeys) {
           output.push(
-            <div key={`${num++}`}>{`${childKey}: ${item[childKey] ||
-              "-"}`}</div>
+            <div key={index++}>{`${childKey}: ${item[childKey] || "-"}`}</div>
           );
         }
       }
@@ -78,14 +79,13 @@ const LogTable = () => {
   };
 
   const displayGeolocation = data => {
-    let num = 0;
     if (data) {
       const output = [];
       const keys = Object.keys(data);
+
+      let index = 0;
       for (const key of keys) {
-        output.push(
-          <div key={`${num++}`}>{`${key}: ${data[key] || "-"}`}</div>
-        );
+        output.push(<div key={index++}>{`${key}: ${data[key] || "-"}`}</div>);
       }
       return output;
     }
