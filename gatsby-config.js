@@ -3,7 +3,7 @@ module.exports = {
     title: `1to30 - Game`,
     description: `Click from 1 to 30 as fast as you can`,
     author: `krsntn`,
-    profileUrl: 'https://dev.krsn.xyz',
+    profileUrl: "https://krsn.xyz"
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -11,8 +11,8 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
-        path: `${__dirname}/src/images`,
-      },
+        path: `${__dirname}/src/images`
+      }
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
@@ -25,9 +25,9 @@ module.exports = {
         background_color: `#007bff`,
         theme_color: `#3498db`,
         display: `minimal-ui`,
-        icon: `src/images/icon.png`, // This path is relative to the root of the site.
-      },
+        icon: `src/images/icon.png` // This path is relative to the root of the site.
+      }
     },
-    `gatsby-plugin-sass`,
-  ],
+    `gatsby-plugin-sass`
+  ]
 };
